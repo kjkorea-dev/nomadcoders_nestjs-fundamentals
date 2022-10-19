@@ -44,4 +44,36 @@ describe('MoviesService', () => {
       }
     });
   });
+
+  describe('deleteOne', () => {
+    it('delete a movie', () => {
+      service.create({
+        title: 'Top Gun',
+        genres: ['action', 'drama'],
+        year: 2022,
+      });
+      service.deleteOne(1);
+      const movies = service.getAll();
+      expect(movies).toHaveLength(0);
+    });
+    it('should return 404 error', () => {
+      try {
+        service.deleteOne(2);
+      } catch (e) {
+        expect(e).toBeInstanceOf(NotFoundException);
+      }
+    });
+  });
+
+  describe('create', () => {
+    it('should be a movie', () => {
+      service.create({
+        title: 'Top Gun',
+        genres: ['action', 'drama'],
+        year: 2022,
+      });
+      const movies = service.getAll();
+      expect(movies).toHaveLength(1);
+    });
+  });
 });
