@@ -76,4 +76,25 @@ describe('MoviesService', () => {
       expect(movies).toHaveLength(1);
     });
   });
+
+  describe('update', () => {
+    it('should update a movie', () => {
+      service.create({
+        title: 'Top Gun',
+        genres: ['action', 'drama'],
+        year: 2022,
+      });
+      service.update(1, { year: 2023 });
+      const movie = service.getOne(1);
+      expect(movie.year).toEqual(2023);
+    });
+
+    it('should throw 404 error', () => {
+      try {
+        service.update(2, {});
+      } catch (e) {
+        expect(e).toBeInstanceOf(NotFoundException);
+      }
+    });
+  });
 });
