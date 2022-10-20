@@ -34,7 +34,7 @@ describe('AppController (e2e)', () => {
       return request(app.getHttpServer()).get('/movies').expect(200).expect([]);
     });
 
-    it('POST', () => {
+    it('POST 201', () => {
       return request(app.getHttpServer())
         .post('/movies')
         .send({
@@ -43,6 +43,18 @@ describe('AppController (e2e)', () => {
           year: 2022,
         })
         .expect(201);
+    });
+
+    it('POST 400', () => {
+      return request(app.getHttpServer())
+        .post('/movies')
+        .send({
+          title: 'Top Gun',
+          genres: ['action'],
+          year: 2022,
+          other: 'thing',
+        })
+        .expect(400);
     });
 
     it('DELETE', () => {
@@ -58,7 +70,17 @@ describe('AppController (e2e)', () => {
     it('GET 404', () => {
       return request(app.getHttpServer()).get('/movies/2').expect(404);
     });
-    it.todo('DELETE');
-    it.todo('PATCH');
+
+    it('PATCH 200', () => {
+      return request(app.getHttpServer())
+        .patch('/movies/1')
+        .send({
+          title: 'Avatar 2',
+        })
+        .expect(200);
+    });
+    it('DELETE 200', () => {
+      return request(app.getHttpServer()).delete('/movies/1').expect(200);
+    });
   });
 });
